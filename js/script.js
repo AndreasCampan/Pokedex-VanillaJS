@@ -1,200 +1,187 @@
-// An IIFE containing an api database of pokemon and the ability to display them in the webpage while showing detail using a modal.
-let pokemonRepo = (function(){
-  let pokemonList = [];
-  //Database
-  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
-  
-  //Capitalizd the name of each pokemon
-  function cap (name) {
+// An IIFE containing the pokedex API and functions
+const pokemonRepo = (function () {
+  const pokemonNameList = [];
+  // Database
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
+
+  // Capitalize the name of each pokemon
+  function cap(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
-  // Funtion to add pokemon to the pokedex - contains a datatype check
+  function byId(a, b) {
+    return parseInt(a.id, 10) - parseInt(b.id, 10);
+  }
+
+  // Adds the iterated pokemon to the PokemonNameList array
   function add(pokemon) {
-    if (typeof pokemon === 'object' && typeof pokemon !== null) {
-        pokemonList.push(pokemon);
-      } else {
-        console.log('you need an object');
-      }
+    if (typeof pokemon === 'object') {
+      pokemonNameList.push(pokemon);
+    } else {
+      console.log('you need an object');
+    }
   }
 
-  // Function for the retrival of the pokedex data
+  // Retrieves the Pokemon array and sorts by Id
   function getAll() {
-    return pokemonList;
+    return pokemonNameList.sort(byId);
   }
 
-  // Function that will display pokemon details in a modal
+  // Function that will display pokemon details in the modal
   function showDetails(pokemon) {
-    loadDetails(pokemon).then(function () {
-      let page = document.querySelector('.pokedex-window');
+    const page = document.querySelector('.pokedex-window');
 
-      //A function to create the modal and it's content
-      function container (){
-        let creatediv = document.createElement('div');
-        creatediv.classList.add('modal-foreground');
+    function hide() {
+      const removeNode = page.querySelector('.modal-foreground');
+      removeNode.remove();
+    }
 
-        let createbutton = document.createElement('button');
-        createbutton.classList.add('close');
-        createbutton.innerHTML = 'X';
-        createbutton.addEventListener('click', hide);
+    // A function to create the modal and it's content
+    function container() {
+      const creatediv = document.createElement('div');
+      const createbutton = document.createElement('button');
+      const createimg = document.createElement('img');
+      const createspan = document.createElement('span');
+      const createname = document.createElement('h1');
+      const createheight = document.createElement('p');
+      const createweight = document.createElement('p');
+      const createability = document.createElement('p');
+      const createtype = document.createElement('p');
 
-        let createimg = document.createElement('img');
-        createimg.classList.add('pokemon-img');
-        createimg.src = pokemon.imageUrl;
-        createimg.alt = "Image of " + pokemon.name;
+      creatediv.classList.add('modal-foreground');
+      createbutton.classList.add('close');
+      createimg.classList.add('pokemon-img');
+      createspan.classList.add('details-text');
 
-        let createname = document.createElement('h1');
-        createname.innerHTML = cap(pokemon.name);
+      createbutton.innerHTML = 'X';
+      createbutton.addEventListener('click', hide);
+      createimg.src = pokemon.imageURLanimated;
+      createimg.alt = `Image of ${pokemon.name}`;
+      createname.innerHTML = cap(pokemon.name);
+      createheight.innerHTML = `<strong>Height: </strong> ${pokemon.height * 10}cm`;
+      createweight.innerHTML = `<strong>Weight: </strong>${pokemon.weight}lbs`;
+      createtype.innerHTML = `<strong>Types: </strong>${pokemon.types}`;
+      createability.innerHTML = `<strong>Abilities: </strong>${pokemon.abilities}`;
 
-        let createheight = document.createElement('h2');
-        createheight.innerHTML = "Height: " + pokemon.height*10 + "cm";
+      // Appends all the created elements to the pokedex window
+      createspan.appendChild(createbutton);
 
-        let createweight = document.createElement('h2');
-        createweight.innerHTML = "Weight: " + pokemon.weight + "lbs";
+      createspan.appendChild(createheight);
+      createspan.appendChild(createweight);
+      createspan.appendChild(createability);
+      createspan.appendChild(createtype);
+      creatediv.appendChild(createimg);
+      creatediv.appendChild(createname);
+      creatediv.appendChild(createspan);
+      page.prepend(creatediv);
 
-        let createability = document.createElement('h2');
-        createability.innerHTML = "Ability: " + pokemon.abilities;
-        
-        let createtype = document.createElement('h2');
-        createtype.innerHTML = "Type: " + pokemon.types;
+      creatediv.classList.add('visible');
+    }
 
-        //Appends all the created elements to the pokedex window
-        creatediv.appendChild(createbutton);
-        creatediv.appendChild(createimg);
-        creatediv.appendChild(createname);
-        creatediv.appendChild(createheight);
-        creatediv.appendChild(createweight);
-        creatediv.appendChild(createability);
-        creatediv.appendChild(createtype);
-        page.prepend(creatediv);
-
-        //enables the 
-        creatediv.classList.add('visible');
+    window.addEventListener('keydown', (event) => {
+      const y = page.querySelector('div');
+      if (event.key === 'Escape' && y.classList.contains('visible')) {
+        hide();
       }
-
-      function hide(){
-        let x = page.querySelector('div');
-        x.classList.remove('visible');
-      }
-      
-      window.addEventListener('keydown', (event) => {
-        let y = page.querySelector('div');
-        if (event.key === 'Escape' && y.classList.contains('visible')) {
-          hide();
-        }
-      });
-      container();
     });
+    container();
   }
 
-  //function to show a loading page while retrieving data.
-  function showLoading(){
-    let pokemonList = document.querySelector('.pokedex-window');
-    let newDiv = document.createElement('div');
+  // function to show a loading page while retrieving data.
+  function showLoading() {
+    const pokemonList = document.querySelector('.pokedex-window');
+    const newDiv = document.createElement('div');
     newDiv.innerText = 'Loading List!';
     newDiv.classList.add('msg-board');
-    pokemonList.prepend(newDiv); 
+    pokemonList.prepend(newDiv);
   }
 
-  //function to hide loading page after retrieving data.
-  function hideLoading(){
-    let pokemonList = document.querySelector('.pokedex-window');
-    let node = pokemonList.firstElementChild;
-    //setTimeout is to mimic delay in retrieving data
-    setTimeout(function () {
-      node.parentElement.removeChild(node);
-    }, 400);
+  // function to hide loading page after retrieving data.
+  function hideLoading() {
+    const pokemonList = document.querySelector('.pokedex-window');
+    const selectedNode = pokemonList.firstElementChild;
+    selectedNode.parentElement.removeChild(selectedNode);
   }
 
-
-  /* Function to display pokemon from database on webpage. Contains a forEach method which creates a button with the name of each element iterated over */
+  /* Appends to the page a list of pokemon from the api */
   function addListItem(pokemon) {
-    let pokemonList = document.querySelector('.pokemon-list');
-    let listItem = document.createElement('li');
-    let button = document.createElement('button');
+    const pokemonList = document.querySelector('.pokemon-list');
+    const listItem = document.createElement('li');
+    const button = document.createElement('button');
+
     button.innerText = cap(pokemon.name);
     button.classList.add('pokemon-list-style');
     listItem.appendChild(button);
-    pokemonList.appendChild(listItem); 
-    //event listener for a click to run the showDetails function
-    button.addEventListener('click', function() {
+    pokemonList.appendChild(listItem);
+    // event listener for a click to run the showDetails function
+    button.addEventListener('click', () => {
       showDetails(pokemon);
     });
   }
 
-  //A function for mimicing a powering down button of the app
+  // A function for mimicking a powering down button of the app
   function powerDown() {
-    let powerButton = document.querySelector('.header-powerbttn');
-    powerButton.addEventListener('click', function(){
+    const powerButton = document.querySelector('.header-powerbttn');
+    powerButton.addEventListener('click', () => {
       if (window.confirm('Are you sure you want to power down?')) {
-        document.body.style.display = "none";     
+        document.body.style.display = 'none';
       }
     });
   }
 
-  //A functon to load each pokemon name and url
+  // Loads the pokemon API and fetches the details API for each pokemon
   function loadList() {
     showLoading();
-    return fetch(apiUrl).then(function (response) {
-      return response.json();
-      }).then(function (json) {
-      json.results.forEach(function (item) {
-        let pokemon = {
-          name: item.name,
-          detailsUrl: item.url
-        };
-        add(pokemon);
-      });
-      }).then (function (){
+    return fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => Promise.all(data.results.map((item) => fetch(item.url)
+        .then((response) => response.json())
+        .then((innerItem) => {
+          const pokemon = {
+            id: innerItem.id,
+            name: innerItem.name,
+            height: innerItem.height,
+            weight: innerItem.weight,
+            imageURL: innerItem.sprites.versions['generation-v']['black-white'].front_default,
+            imageURLanimated: innerItem.sprites.versions['generation-v']['black-white'].animated.front_default,
+            abilities: [],
+            types: []
+          };
+          innerItem.abilities.forEach((innerItemAbility) => {
+            pokemon.abilities.push(` ${cap(innerItemAbility.ability.name)}`);
+          });
+          innerItem.types.forEach((itemType) => {
+            pokemon.types.push(` ${cap(itemType.type.name)}`);
+          });
+          add(pokemon);
+        }))))
+      .then(() => {
         hideLoading();
-      }).catch(function (e) {
+      })
+      .catch((e) => {
         hideLoading();
         console.error(e);
       });
   }
-  
-  //Load the details from the database
-  function loadDetails(item) {
-    showLoading();
-    let url = item.detailsUrl;
-    return fetch(url).then(function (response) {
-      return response.json();
-    }).then(function (details) {
-      //The specific details requested
-      item.imageUrl = details.sprites.front_default;
-      item.height = details.height;
-      item.types = details.types;
-      item.weight = details.weight;
-      item.abilities = [];
-      details.abilities.forEach(function (itemAbility){
-        item.abilities.push(" " + cap(itemAbility.ability.name));
-      });
-      item.types = [];
-      details.types.forEach(function(itemType){
-        item.types.push(" " + cap(itemType.type.name));
-      });
-    }).then (function (){
-      hideLoading();
-    }).catch(function (e) {
-      console.error(e);
-    });
-  }
 
-  //Allows access to the IIFE from outside the function
+  // Allows access to the IIFE from outside the function
   return {
-    addf: add,
     getAllf: getAll,
     addListItemf: addListItem,
     loadListf: loadList,
-    powerDownf:powerDown
+    powerDownf: powerDown
   };
-})();
+}());
 
-pokemonRepo.loadListf().then(function() {
-  pokemonRepo.getAllf().forEach(function(pokemon){
-    pokemonRepo.addListItemf(pokemon);
+pokemonRepo.loadListf()
+  .then(() => {
+    pokemonRepo.getAllf().forEach((pokemon) => {
+      pokemonRepo.addListItemf(pokemon);
+    });
+  })
+  .catch((e) => {
+    console.log(e);
   });
-});
 
-//Runs the powerdown function to shut down the page if clicked
+// Runs the powerdown function to shut down the page if clicked
 pokemonRepo.powerDownf();
