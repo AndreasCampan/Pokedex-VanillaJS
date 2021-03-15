@@ -5,9 +5,12 @@
 * Browsers: last 2 version
 */
 
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
 * {/*  Varies values to fit within given size */
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-family: 'DotGothic16', sans-serif;
 }
 
 body {
@@ -23,44 +26,25 @@ body {
 }
 
 h1 {
-  margin: 0 0 25px 0;
+  margin: 0 0 25px;
   padding: 0;
-  font-size: 32px;
+  font-size: 26pt;
   text-align: center;
-}
-
-h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 22px;
-  text-align: left;
-  margin-bottom: 10px;
 }
 
 p {
   margin: 0;
-  font-size: 23px;
-  font-weight: 400;
-  line-height: 1.2em;
+  font-size: 18pt;
+  line-height: 1.5em;
 }
 
 ul {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
-
-
 
 /*-------------------------Header-------------------------*/
-.page-header { /* endless background for the header */
-  width: 100%;
-  min-width: 310px;
-  height: 120px;
-  background-color: #8d0005;
-  border-bottom: 3px solid black;
-  -webkit-transition: ease all .4s;
-  transition: ease all .4s;
-}
-
 .page-header-box{
   display: -webkit-box;
   display: -ms-flexbox;
@@ -72,13 +56,14 @@ ul {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: auto;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   width: 100%;
   min-width: 310px;
-  max-width: 800px;
   height: 120px;
-  -webkit-transition: ease all .4s;
-  transition: ease all .4s;
+  background-color: #8d0005;
+  border-bottom: 3px solid black;
 }
 
 .header-powerbttn {
@@ -90,6 +75,8 @@ ul {
   min-height: 100px;
   -webkit-transition: ease-in-out all .3s;
   transition: ease-in-out all .3s;
+  margin-right: 25px;
+  cursor: pointer;
 }
 
 .header-powerbttn:hover {
@@ -101,12 +88,11 @@ ul {
   min-height: 100px;
   -webkit-transition: ease-in-out all .2s;
   transition: ease-in-out all .2s;
+  margin-right: 25px;
 }
 
 .page-header-box li {
   display: inline-block;
-  list-style-type: none;
-  padding: 0 1em;
 }
 
 .container{
@@ -118,25 +104,24 @@ ul {
 /*-------------------------Navigation link images-------------------------*/
 .nav-bttn-home {
   background-image: url(../img/greenbttn.png);
-  background-size: 100% 100%;
   width: 132px;
   height: 41px;
   -webkit-transition: ease-in-out all .2s;
   transition: ease-in-out all .2s;
+  margin-right: 15px;
 }
 
 .nav-bttn-home:hover {
   background-image: url(../img/greenbttn-hover.png);
-  background-size: 100% 100%;
   width: 132px;
   height: 41px;
   -webkit-transition: ease-in-out all .2s;
   transition: ease-in-out all .2s;
+  margin-right: 15px;
 }
 
 .nav-bttn-about {
   background-image: url(../img/aboutbttn.png);
-  background-size: 100% 100%;
   width: 132px;
   height: 41px;
   -webkit-transition: ease-in-out all .2s;
@@ -145,7 +130,6 @@ ul {
 
 .nav-bttn-about:hover {
   background-image: url(../img/aboutbttn-hover.png);
-  background-size: 100% 100%;
   width: 132px;
   height: 41px;
   -webkit-transition: ease-in-out all .2s;
@@ -180,8 +164,10 @@ ul {
   font-size: 1.5em;
   cursor: pointer;
 }
-.modal-foreground{
-  display: none;
+
+
+details.text{
+  text-align: left;
 }
 
 .modal-foreground.visible{
@@ -207,17 +193,16 @@ ul {
   -webkit-box-pack:center;
       -ms-flex-pack:center;
           justify-content:center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
-.pokemon-img{  
-  width: 250px;
-  height: 250px;
-  margin: -30px 0 -10px 0;
+.pokemon-img{ 
+  -ms-flex-item-align: center; 
+      -ms-grid-row-align: center; 
+      align-self: center;
+  width: 130px;
+  height: auto;
+  margin: 0 0 20px 0;
 }
-
 /*-------------------------Home Page-------------------------*/
 .pokedex-window {
   position: relative;
@@ -225,6 +210,7 @@ ul {
   width: 100%;
   min-width: 300px;
   height: 500px;
+  min-height: 500px;
   background-color: #ececec;
   margin: 50px auto;
   padding: 15px 15px 15px;
@@ -322,8 +308,8 @@ ul {
   width: 100%;
   min-width: 300px;
   height: 100%;
+  margin-bottom: 50px;
   max-height: 85vh;
-  margin: 0 auto;
   border-radius: 5%;
   padding: 15px;
   background-color: #d2d0e6;
@@ -331,8 +317,6 @@ ul {
 
 .about-logo-box {
   position: absolute;
-  margin-top: 0px;
-  margin:  auto;
   bottom: 15px;
   left: 0;
   right: 0;
@@ -356,17 +340,28 @@ ul {
 
 @media all and (max-width:720px) {
   .pokedex-window {
-    min-height: 200px;
-    height: 80vh;
+    height: 60vh;
     margin: 0.5em auto 0;
     padding: 15px;
+  }
+
+  p{
+    font-size: 16pt;
   }
 }
 
 @media all and (max-width:475px) {
 
+  h1{
+    font-size: 20pt;
+  }
+  p{
+    font-size: 14pt;
+  }
+
   .pokedex-window {
     padding: 10px;
+    height: 82vh;
     margin: 0.5em auto 0;
   }
   
@@ -392,35 +387,28 @@ ul {
     line-height: 45px;
   }
 
-  .page-header { /* endless background for the header */
-    min-width: 310px;
-    height: 90px;
-  }
-
   .page-header-box{
     height: 90px;
   }
 
-  .page-header-box li {
-    padding: 0;
-  }
-
   .header-powerbttn, .header-powerbttn:hover {
-    margin-left: 10px;
-    margin-right: -20px;
     width: 75px;
     height: 75px;
     min-width: 75px;
     min-height: 75px;
+    margin-right: 5px;
   }
 
   .nav-bttn-home, .nav-bttn-home:hover {
+    margin-right: 0;
+    background-size: 100% 100%;
     width: 95px;
     height: 30px;
-    margin-right: 5px;
   }
   
   .nav-bttn-about, .nav-bttn-about:hover {
+    margin-right: 0;
+    background-size: 100% 100%;
     width: 95px;
     height: 30px;
   }
@@ -441,6 +429,7 @@ ul {
 
   h2 {
     font-size: 20px;
+    text-align: left;
   }
 
   .container{
