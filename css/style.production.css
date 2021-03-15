@@ -415,6 +415,7 @@ details.text{
   
   .logos {
     width: 40px;
+    margin: 3px;
   }
 }
 
@@ -438,7 +439,7 @@ details.text{
   }
 
   .pokedex-window {
-    min-width: 280px;
+    min-width: 300px;
   }
 
   .about-window { 
