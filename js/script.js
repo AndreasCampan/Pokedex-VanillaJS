@@ -1,6 +1,6 @@
 // An IIFE containing the pokedex API and functions
 const pokemonRepo = (function () {
-  const pokemonNameList = [];
+  let pokemonNameList = [];
   // Database
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
 
